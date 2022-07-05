@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class Begriff extends ChangeNotifier {
+class Begriffe extends ChangeNotifier {
   late List<String> _begriffe;
 
   Begriffe() {
@@ -16,15 +16,22 @@ class Begriff extends ChangeNotifier {
       "Aufnahmegerät",
       "Wangenknochen",
       "Welle",
+      "Stier",
+      "Geist",
+      "Computer",
+      "Fenster",
+      "Stein",
+      "Gorilla",
+
     ];
   }
 
-  List<String> get begriffe => List.unmodifiable(_begriffe);
+  List<String> get getListeBegriffe => List.unmodifiable(_begriffe);
 
   add(String neuerBegriff) {
     _begriffe.add(neuerBegriff);
     notifyListeners();
   }
 
-  String get getBegriffe => _begriffe[Random().nextInt(begriffe.length)];
+  String get getBegriffe => _begriffe[Random().nextInt(getListeBegriffe.length)];
 }
