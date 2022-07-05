@@ -14,18 +14,6 @@ class Startpage extends StatefulWidget {
 
 
 class _StartPageState extends State<Startpage>{
-  
-  
-/***
-  @override
-  void initState() {
-    super.initState();
-    ShakeDetector.autoStart(
-        onPhoneShake: forceRedraw
-    );
-  }
-    */
-
 
 
   @override
