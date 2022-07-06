@@ -54,12 +54,12 @@ class _BegriffMaintainancePageState extends State<BegriffMaintainancePage> {
 
     return Column(
       children: [
-        const TextField(
+         TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             hintText: "Hier eingeben:",
           ),
-          // controller: myTextController,
+           controller: myTextController,
         ),
         ElevatedButton(
           onPressed: () {

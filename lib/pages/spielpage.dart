@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:guess_what/model/begriffe.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shake/shake.dart';
+//import 'package:tilt_action/tilt_action.dart'; //wäre die beste Lösung, geht aber nicht. (wahrscheinlich zu alt)
+
 
 
 class SpielPage extends StatefulWidget {
@@ -25,11 +27,13 @@ class _SpielPageState extends State<SpielPage> {
   late StreamSubscription subscription;
   String neuerBegriff = "";
 
+
+
   forceRedraw() {
     setState(() => {});
     neuerBegriff = widget.data.getBegriffe;
-    _counter++;
-    print(_counter);
+    //_counter++;
+    //print(_counter);
   }
 
 
@@ -37,18 +41,35 @@ class _SpielPageState extends State<SpielPage> {
   void initState() {
     super.initState();
     neuerBegriff = widget.data.getBegriffe;
-    ShakeDetector.autoStart(
-        onPhoneShake: forceRedraw
-    );
-  }
+     accelerometerEvents.listen((event) {
+      if(event.x < 5){
+        print(event.x);
 
+        forceRedraw();
+      }
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: Center(child: Text(neuerBegriff, textScaleFactor: 5,
+      body: Center(
+        child: Text(neuerBegriff, textScaleFactor: 4,
         ),
+      ),
+    );
+  }
+
+  Widget exit(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: ElevatedButton(
+        onPressed: () {
+
+        },
+        child: const Text("Beenden", style: TextStyle(fontSize: 20)),
       ),
     );
   }
