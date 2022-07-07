@@ -9,7 +9,6 @@ import 'package:better_sound_effect/better_sound_effect.dart';
 class SpielPage extends StatefulWidget {
   final Begriffe data;
 
-
   const SpielPage(this.data, {Key? key}) : super(key: key);
 
   @override
@@ -17,23 +16,26 @@ class SpielPage extends StatefulWidget {
 }
 
 class _SpielPageState extends State<SpielPage> {
-
   final soundEffect = BetterSoundEffect();
 
-  int? soundId;
+  int? soundId1;
+  int? soundId2;
 
   int _counter = 0;
   Timer? countdownTimer;
   Duration myDuration = Duration(days: 5);
   late StreamSubscription subscription;
   String neuerBegriff = "";
+  int gekippt = 0;
 
   forceRedraw() {
     setState(() => {});
-    neuerBegriff = widget.data.getBegriffe;
-   if(countdownTimer != null){
-     _counter++;
-   }
+    if( gekippt == 1) {
+      neuerBegriff = widget.data.getBegriffe;
+      _counter++;
+    }
+
+
 
     //print(_counter);
   }
@@ -41,21 +43,25 @@ class _SpielPageState extends State<SpielPage> {
   @override
   void initState() {
     super.initState();
-    
-    Future.microtask(() async
-      {
-        soundId = await soundEffect.loadAssetAudioFile("assets/sounds/mixkit-game-notification-wave-alarm-987.wav");
-      }
-    );
-    
-    neuerBegriff = widget.data.getBegriffe;
+
+    Future.microtask(() async {
+      soundId1 = await soundEffect.loadAssetAudioFile("assets/sounds/Clock-Ticking-C-www.fesliyanstudios.com.mp3");
+      soundId2 = await soundEffect.loadAssetAudioFile("assets/sounds/Nuclear-alarm-siren.mp3");
+    });
+
+
     accelerometerEvents.listen((event) {
       if (event.x < 5) {
         print(event.x);
         print(_counter);
+        gekippt = gekippt+1;
 
         forceRedraw();
       }
+      if (event.x > 5){
+        gekippt = 0;
+      }
+
     });
   }
 
@@ -63,7 +69,15 @@ class _SpielPageState extends State<SpielPage> {
   Widget build(BuildContext context) {
     String strDigits(int n) => n.toString().padLeft(2, '0');
 
-    final seconds = strDigits(myDuration.inSeconds.remainder(45));
+    final seconds = strDigits(myDuration.inSeconds.remainder(60));
+
+    /**
+        if(seconds.isNotEmpty && seconds == "00"){
+        stopTimer();
+        print("STOP");
+        }
+
+     */
 
     return Scaffold(
       body: Center(
@@ -155,15 +169,67 @@ class _SpielPageState extends State<SpielPage> {
   void startTimer() {
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+
+    if (soundId1 != null && soundId2 != null) {
+
+      Timer(Duration(seconds: 65), () {
+        stopTimer();
+        setCountDown();
+      });
+
+      Timer(Duration(seconds: 60), () {
+        soundEffect.play(soundId2!);
+      });
+        Timer(Duration(seconds: 6), () {
+          soundEffect.play(soundId1!);
+
+          Timer(Duration(seconds: 6), () {
+            soundEffect.play(soundId1!);
+
+            Timer(Duration(seconds: 6), () {
+              soundEffect.play(soundId1!);
+
+              Timer(Duration(seconds: 6), () {
+                soundEffect.play(soundId1!);
+
+                Timer(Duration(seconds: 6), () {
+                  soundEffect.play(soundId1!);
+
+                  Timer(Duration(seconds: 6), () {
+                    soundEffect.play(soundId1!);
+
+                    Timer(Duration(seconds: 6), () {
+                      soundEffect.play(soundId1!);
+
+                      Timer(Duration(seconds: 6), () {
+                        soundEffect.play(soundId1!);
+
+                        Timer(Duration(seconds: 6), () {
+                          soundEffect.play(soundId1!);
+                        });
+                        soundEffect.play(soundId1!);
+                      });
+                      soundEffect.play(soundId1!);
+                    });
+                    soundEffect.play(soundId1!);
+                  });
+                  soundEffect.play(soundId1!);
+                });
+                soundEffect.play(soundId1!);
+              });
+              soundEffect.play(soundId1!);
+            });
+            soundEffect.play(soundId1!);
+          });
+          soundEffect.play(soundId1!);
+        });
+      soundEffect.play(soundId1!);
+    }
   }
 
   void stopTimer() {
-    setState(() => countdownTimer!.cancel());
-  }
-
-  void resetTimer() {
-    stopTimer();
-    setState(() => myDuration = Duration(days: 5));
+    setState(() => countdownTimer!.cancel()
+    );
   }
 
   void setCountDown() async {
@@ -172,13 +238,8 @@ class _SpielPageState extends State<SpielPage> {
       final seconds = myDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
         countdownTimer!.cancel();
-
       } else {
         myDuration = Duration(seconds: seconds);
-      }
-
-      if(soundId != null){
-        soundEffect.play(soundId!);
       }
     });
   }

@@ -7,21 +7,21 @@ class Begriffe extends ChangeNotifier {
 
   Begriffe() {
     _begriffe = [
-      "Hund",
-      "Warteraum",
-      "Zentrum",
-      "Kind",
-      "Elternteil",
-      "Gehirn",
-      "Aufnahmegerät",
-      "Wangenknochen",
-      "Welle",
-      "Stier",
-      "Geist",
-      "Computer",
-      "Fenster",
-      "Stein",
-      "Gorilla",
+      "the Rock",
+      "Justin Biber",
+      "Oprah Winfield",
+      "Jennifer Lopez",
+      "Donald Trump",
+      "Will Smith",
+      "Elon Musk",
+      "Cristiano Ronaldo",
+      "Tiger Woods",
+      "Lebron James",
+      "Lionel Messi",
+      "Rihanna",
+      "Taylor Swift",
+      "Eminem",
+      "James Bond",
 
     ];
   }
