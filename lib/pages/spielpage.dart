@@ -230,10 +230,12 @@ class _SpielPageState extends State<SpielPage> {
   void stopTimer() {
     setState(() => countdownTimer!.cancel()
     );
+    countdownTimer?.cancel();
   }
 
   void setCountDown() async {
     final reduceSecondsBy = 1;
+    myDuration.inSeconds.remainder(60);
     setState(() {
       final seconds = myDuration.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
