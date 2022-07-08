@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/begriffe.dart';
 
+/**
+ * Dieses ist die Spielseite. Hier wurde die ganze Logik hinter dem Spiel implementiert.
+ */
+
 class Startpage extends StatefulWidget {
 
 
