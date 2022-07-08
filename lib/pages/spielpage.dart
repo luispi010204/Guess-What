@@ -21,7 +21,7 @@ class _SpielPageState extends State<SpielPage> {
   int? soundId1;
   int? soundId2;
 
-  int _counter = 0;
+  int _counter = -1;
   Timer? countdownTimer;
   Duration myDuration = Duration(days: 5);
   late StreamSubscription subscription;
@@ -30,12 +30,10 @@ class _SpielPageState extends State<SpielPage> {
 
   forceRedraw() {
     setState(() => {});
-    if( gekippt == 1) {
+    if (gekippt == 1) {
       neuerBegriff = widget.data.getBegriffe;
       _counter++;
     }
-
-
 
     //print(_counter);
   }
@@ -45,23 +43,23 @@ class _SpielPageState extends State<SpielPage> {
     super.initState();
 
     Future.microtask(() async {
-      soundId1 = await soundEffect.loadAssetAudioFile("assets/sounds/Clock-Ticking-C-www.fesliyanstudios.com.mp3");
-      soundId2 = await soundEffect.loadAssetAudioFile("assets/sounds/Nuclear-alarm-siren.mp3");
+      soundId1 = await soundEffect.loadAssetAudioFile(
+          "assets/sounds/Clock-Ticking-C-www.fesliyanstudios.com.mp3");
+      soundId2 = await soundEffect
+          .loadAssetAudioFile("assets/sounds/Nuclear-alarm-siren.mp3");
     });
 
-
     accelerometerEvents.listen((event) {
-      if (event.x < 5) {
+      if (event.x < 5 && event.z < 5) {
         print(event.x);
         print(_counter);
-        gekippt = gekippt+1;
+        gekippt = gekippt + 1;
 
         forceRedraw();
       }
-      if (event.x > 5){
+      if (event.x > 5) {
         gekippt = 0;
       }
-
     });
   }
 
@@ -70,7 +68,6 @@ class _SpielPageState extends State<SpielPage> {
     String strDigits(int n) => n.toString().padLeft(2, '0');
 
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
-
 
     return Scaffold(
       body: Center(
@@ -126,7 +123,6 @@ class _SpielPageState extends State<SpielPage> {
                         stopTimer();
                       }
                       dispose();
-
                     },
                     child: Text(
                       'Stop',
@@ -162,12 +158,10 @@ class _SpielPageState extends State<SpielPage> {
   }
 
   void startTimer() {
-
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
 
     if (soundId1 != null && soundId2 != null) {
-
       Timer(Duration(seconds: 65), () {
         stopTimer();
         setCountDown();
@@ -176,6 +170,9 @@ class _SpielPageState extends State<SpielPage> {
       Timer(Duration(seconds: 60), () {
         soundEffect.play(soundId2!);
       });
+      Timer(Duration(seconds: 6), () {
+        soundEffect.play(soundId1!);
+
         Timer(Duration(seconds: 6), () {
           soundEffect.play(soundId1!);
 
@@ -199,11 +196,6 @@ class _SpielPageState extends State<SpielPage> {
 
                       Timer(Duration(seconds: 6), () {
                         soundEffect.play(soundId1!);
-
-                        Timer(Duration(seconds: 6), () {
-                          soundEffect.play(soundId1!);
-                        });
-                        soundEffect.play(soundId1!);
                       });
                       soundEffect.play(soundId1!);
                     });
@@ -219,13 +211,14 @@ class _SpielPageState extends State<SpielPage> {
           });
           soundEffect.play(soundId1!);
         });
+        soundEffect.play(soundId1!);
+      });
       soundEffect.play(soundId1!);
     }
   }
 
   void stopTimer() {
-    setState(() => countdownTimer!.cancel()
-    );
+    setState(() => countdownTimer!.cancel());
     countdownTimer?.cancel();
   }
 
@@ -248,8 +241,5 @@ class _SpielPageState extends State<SpielPage> {
       soundEffect.release(soundId1!);
       soundEffect.release(soundId2!);
     }
-
   }
-
-
 }
