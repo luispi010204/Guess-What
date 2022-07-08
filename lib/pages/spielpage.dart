@@ -71,13 +71,6 @@ class _SpielPageState extends State<SpielPage> {
 
     final seconds = strDigits(myDuration.inSeconds.remainder(60));
 
-    /**
-        if(seconds.isNotEmpty && seconds == "00"){
-        stopTimer();
-        print("STOP");
-        }
-
-     */
 
     return Scaffold(
       body: Center(
@@ -132,6 +125,8 @@ class _SpielPageState extends State<SpielPage> {
                       if (countdownTimer == null || countdownTimer!.isActive) {
                         stopTimer();
                       }
+                      dispose();
+
                     },
                     child: Text(
                       'Stop',
@@ -167,6 +162,7 @@ class _SpielPageState extends State<SpielPage> {
   }
 
   void startTimer() {
+
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
 
@@ -245,4 +241,15 @@ class _SpielPageState extends State<SpielPage> {
       }
     });
   }
+
+  @override
+  void dispose() {
+    if (soundId1 != null || soundId2 != null) {
+      soundEffect.release(soundId1!);
+      soundEffect.release(soundId2!);
+    }
+
+  }
+
+
 }
